@@ -1,20 +1,25 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
 
-void main(int argv, const char** argc) {
 
-	if (argv > 1) {
-		for (int i = 0; i < argv; i++) {
-			printf("%s", argc[i]);
-		}
-	}
+void format(char* out, const char* format, ...) {
+    char buffer[200];
+    va_list list;
+    va_start(list, format);
+    vsprintf(buffer, format, list);
+    va_end(list);
+    strcpy(out, buffer);
+}
 
-    #ifdef linux
-    system("clear");
-    #endif
-    #ifdef _WIN32
-    system("cls");
-    #endif
+void main() {
 
-	return;
+    char str[200];
+    format(str, "Hi my name is %s and I am %d y.o.", "Asif", 20);
+    printf("\n%s\n\n", str);
+    getc(stdin);
+
+    return;
+
 }
