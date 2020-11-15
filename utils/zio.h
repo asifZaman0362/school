@@ -1,8 +1,11 @@
+//
+// Created by Asif Zaman on 11/15/2020.
+//
 
-void format(char* out, const char* _format, ...);
+#ifndef UNTITLED1_ZIO_H
+#define UNTITLED1_ZIO_H
 
-void zgetch();
-void zgetch(const char* mssg);
+void promptf(const char*, const char*, ...);
+void format(char*, const char*, ...);
 
-void zscanf();
-void zscanf(const char* mssg);
+#endif //UNTITLED1_ZIO_H
