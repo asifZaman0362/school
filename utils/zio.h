@@ -7,5 +7,6 @@
 
 void promptf(const char*, const char*, ...);
 void format(char*, const char*, ...);
+void clear();
 
 #endif //UNTITLED1_ZIO_H

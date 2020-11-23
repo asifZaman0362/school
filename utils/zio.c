@@ -73,3 +73,12 @@ void promptf(const char* msg, const char* fmt, ...) {
     va_end(list);
 
 }
+
+void clear() {
+#ifdef linux
+    system("clear");
+#endif
+#if defined(WIN_32) || defined(WIN_64)
+    system("clrscr");
+#endif
+}
