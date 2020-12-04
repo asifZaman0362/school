@@ -1,9 +1,5 @@
 #pragma once
 #include "logic_gates.hpp"
-#include <vector>
-#include <tuple>
-#include <iostream>
-#include <math.h>
 
 
 namespace tst::dd {
@@ -28,17 +24,10 @@ namespace tst::dd {
                     bits[i] = arr[i];
                 }
             }
-            void Print() {
-                std::cout << "0b";
-                for (int i = 0; i < 8; i++) {
-                    std::cout << bits[i];
-                }
-                std::cout << std::endl;
-            }
             int Decimal() {
                 int dec = 0;
                 for (int i = 0; i < 8; i++) {
-                    dec += bits[i] * pow(2, 8-i);
+                    dec += bits[i] * pow2(8-i);
                 }
                 return dec;
             }
