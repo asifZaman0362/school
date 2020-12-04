@@ -27,7 +27,7 @@ namespace tst::dd {
             int Decimal() {
                 int dec = 0;
                 for (int i = 0; i < 8; i++) {
-                    dec += bits[i] * pow2(8-i);
+                    dec += bits[i] * pow2(7-i);
                 }
                 return dec;
             }
