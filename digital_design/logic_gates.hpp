@@ -2,8 +2,19 @@
 
 
 namespace tst::dd {
+
+
+    #define OR(a, b) a || b
+    #define XOR(a, b) a != b
+    #define AND(a, b) a && b
+    #define NOT(a) !a
+    #define NOR(a, b) NOT(OR(a, b))
+    #define XNOR(a, b) NOT(XOR(a, b))
+    #define NAND(a, b) NOT(AND(a, b))
+
+
     struct Gate {
-        
+
     protected:
         bool in1;
         bool in2;
@@ -20,52 +31,52 @@ namespace tst::dd {
         virtual bool Out() = 0;
     };
 
-    struct AND : public Gate {
-        AND(bool in1, bool in2) : Gate(in1, in2) {}
+    struct AndGate : public Gate {
+        AndGate(bool in1, bool in2) : Gate(in1, in2) {}
         virtual bool Out() override {
-            return in1 && in2;
+            return AND(in1, in2);
         }
     };
 
-    struct OR : public Gate {
-        OR(bool in1, bool in2) : Gate(in1, in2) {}
+    struct OrGate : public Gate {
+        OrGate(bool in1, bool in2) : Gate(in1, in2) {}
         virtual bool Out() override {
-            return in1 || in2;
+            return OR(in1, in2);
         }
     };
 
-    struct NOT : public AND {
-        NOT(bool in) : AND(in, in) {}
+    struct NotGate : public Gate {
+        NotGate(bool in) : Gate(in, in) {}
         virtual bool Out() override {
-            return !AND::Out();
+            return NOT(in1);
         }
     };
 
-    struct XOR : public Gate {
-        XOR(bool in1, bool in2) : Gate(in1, in2) {}
+    struct XorGate : public Gate {
+        XorGate(bool in1, bool in2) : Gate(in1, in2) {}
         virtual bool Out() override {
-            return in1 != in2;
+            return XOR(in1, in2);
         }
     };
 
-    struct NAND : public Gate {
-        NAND(bool in1, bool in2) : Gate(in1, in2) {}
+    struct NandGate : public Gate {
+        NandGate(bool in1, bool in2) : Gate(in1, in2) {}
         virtual bool Out() override {
-            return !(in1 && in2);
+            return NAND(in1, in2);
         }
     };
 
-    struct NOR : public Gate {
-        NOR(bool in1, bool in2) : Gate(in1, in2) {}
+    struct NorGate : public Gate {
+        NorGate(bool in1, bool in2) : Gate(in1, in2) {}
         virtual bool Out() override {
-            return !(in1 || in2);
+            return NOR(in1, in2);
         }
     };
 
-    struct XNOR : public Gate {
-        XNOR(bool in1, bool in2) : Gate(in1, in2) {}
+    struct XnorGate : public Gate {
+        XnorGate(bool in1, bool in2) : Gate(in1, in2) {}
         virtual bool Out() override {
-            return in1 == in2;
+            return NOT(XOR(in1, in2));
         }
     };
     

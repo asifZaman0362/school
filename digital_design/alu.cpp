@@ -34,8 +34,8 @@ namespace tst::dd {
         }
 
         vec<bool, bool> AddBits(bool a, bool b, bool c) {
-            bool sum = XOR(XOR(a, b).Out(), c).Out();
-            bool carry = OR( AND( XOR(a, b).Out(), c ).Out(), AND(a, b).Out() ).Out();
+            bool sum = XOR(XOR(a, b), c);
+            bool carry = OR(AND(XOR(a, b), c), AND(a, b));
             return vec(sum, carry);
         }
 
@@ -51,8 +51,8 @@ namespace tst::dd {
         }
 
         vec<bool, bool> SubtractBits(bool a, bool b, bool c) {
-            bool dif = XOR(XOR(a, b).Out(), c).Out();
-            bool bor = OR( AND(b, c).Out(), AND(!a, XOR(b, c).Out()).Out() ).Out();
+            bool dif = XOR(XOR(a, b), c);
+            bool bor = OR(AND(b, c), AND(!a, XOR(b, c)));
             return vec(dif, bor);
         }
 
