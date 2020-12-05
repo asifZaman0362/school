@@ -5,9 +5,12 @@
 namespace tst::dd {
     namespace ALU {
 
+        template <typename T1, typename T2>
         struct vec {
-            bool a, b;
-            vec(bool a, bool b) : a(a), b(b) {}
+            T1 x;
+            T2 y;
+            vec();
+            vec(T1 x, T2 y) : x(x), y(y) {}
         };
 
         struct byte {
@@ -19,13 +22,13 @@ namespace tst::dd {
 
         inline int pow2 (int);
 
-        vec AddBits(bool, bool, bool);
+        vec<bool, bool> AddBits(bool, bool, bool);
 
-        byte AddBytes(byte, byte);
+        vec<byte, bool> AddBytes(byte, byte);
 
-        vec SubtractBits(bool, bool, bool);
+        vec<bool, bool> SubtractBits(bool, bool, bool);
 
-        byte SubtractBytes(byte, byte);
+        vec<byte, bool> SubtractBytes(byte, byte);
 
     }
 }
