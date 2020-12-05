@@ -3,9 +3,11 @@
 
 namespace tst::dd {
     struct Gate {
+        
     protected:
         bool in1;
         bool in2;
+
     public:
         Gate(bool in1, bool in2) {
             this->in1 = in1;

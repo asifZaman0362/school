@@ -3,6 +3,12 @@
 namespace tst::dd {
     namespace ALU {
 
+        inline int pow2 (int n) {
+            int sum = 1;
+            for (int i = 0; i < n; i++) sum *= 2;
+            return sum;
+        }
+
         byte::byte(bool arr[]) {
             for (int i = 0; i < 8; i++) {
                 bits[i] = arr[i];

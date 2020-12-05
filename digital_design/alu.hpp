@@ -5,12 +5,6 @@
 namespace tst::dd {
     namespace ALU {
 
-        inline int pow2 (int n) {
-            int sum = 1;
-            for (int i = 0; i < n; i++) sum = sum * 2;
-            return sum;
-        }
-
         struct vec {
             bool a, b;
             vec(bool a, bool b) : a(a), b(b) {}
@@ -23,13 +17,15 @@ namespace tst::dd {
             int Decimal();
         };
 
-        vec AddBits(bool a, bool b, bool c);
+        inline int pow2 (int);
 
-        byte AddBytes(byte a, byte b);
+        vec AddBits(bool, bool, bool);
 
-        vec SubtractBits(bool a, bool b, bool c);
+        byte AddBytes(byte, byte);
 
-        byte SubtractBytes(byte a, byte b);
+        vec SubtractBits(bool, bool, bool);
+
+        byte SubtractBytes(byte, byte);
 
     }
 }
