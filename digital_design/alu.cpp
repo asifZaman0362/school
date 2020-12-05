@@ -21,7 +21,7 @@ namespace tst::dd {
                     calcbits[i] = !calcbits[i];
                 }
             }
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 8; i++) {
                 dec += calcbits[i] * pow2(7-i);
             }
             return sign * dec;
