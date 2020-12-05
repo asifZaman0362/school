@@ -9,7 +9,7 @@ int main() {
     bool bbits[] = {0,0,1,1,1,0,0,0};
     ALU::byte a(abits);
     ALU::byte b(bbits);
-    ALU::byte c = ALU::AddBytes(a, b);
+    ALU::byte c = ALU::SubtractBytes(a, b);
     std::cout << c.Decimal() << std::endl;
     return 0;
 }
