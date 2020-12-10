@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <string.h>
+#include <string>
+#include <sstream>
 #include <stack>
-
-
-#define bool    unsigned char
-#define false   0
-#define true    1
+#include <iostream>
 
 
 bool compareOp(char op1, char op2) {
@@ -46,25 +44,58 @@ bool parseOperator(const char token, char* outOp) {
 }
 
 
-bool parseExp(const char* ex, float* out) {
-
-    std::stack<float> stNum;
-    std::stack<char> stOp;
-
-    char token[100];
-    int i = 0, i_t = 0;
-    while (ex[i] != '\0' && ex[i] != '\n') {
-        char _op;
-        if (parseOperator(ex[i], &_op)) {
-            if (i_t > 0) {
+float parseExp(std::string str) {
+    std::stack<float> numStack;
+    std::stack<char> opStack;
+    int i = 0, j = 0;
+    std::string token;
+    const char* ex = str.c_str();
+    while (i <= str.length()) {
+        char op = '+';
+        if (parseOperator(ex[i], &op) || ex[i] == '\0') {
+            if (opStack.empty()) {
                 float num;
-                if (parseNum(token, &num, i_t)) stNum.push(num);
+                parseNum(token.c_str(), &num, token.length());
+                opStack.push(op);
+                numStack.push(num);
+                token = "";
             }
-            stOp.push(_op);
-            i_t = 0;
-        } else token[i_t++] = ex[i];
+            else if (ex[i] != '\0') {
+                if (compareOp(opStack.top(), op)) {
+                    float num;
+                    if (parseNum(token.c_str(), &num, token.length())) {
+                        float res = 0;
+                        if (opStack.top() == '*') res = numStack.top() * num;
+                        else if (opStack.top() == '/') res = numStack.top() / num;
+                        else if (opStack.top() == '-') res = numStack.top() - num;
+                        else if (opStack.top() == '+') res = numStack.top() + num;
+                        numStack.pop();
+                        numStack.push(res);
+                        std::cout << res;
+                        opStack.push(op);
+                        token = "";
+                    } else return false;
+                }
+            } else if (ex[i] == '\0') {
+                float num;
+                if (parseNum(token.c_str(), &num, token.length())) {
+                    float res = 0;
+                    std::cout << num << "; " << numStack.top();
+                    if (opStack.top() == '*') res = numStack.top() * num;
+                    else if (opStack.top() == '/') res = numStack.top() / num;
+                    else if (opStack.top() == '-') res = numStack.top() - num;
+                    else if (opStack.top() == '+') res = numStack.top() + num;
+                    numStack.push(res);
+                }
+            }
+        } else {
+            std::stringstream str;
+            str << ex[i];
+            token.append(str.str());
+        }
+        i++;
     }
-    return true;
+    return numStack.top();
 }
 
 
@@ -73,8 +104,8 @@ int main() {
     char cleanExp[100];
     float result;
     printf("Enter an arithmetic expression >> ");
-    scanf("%s", exp);
-    //cleanUpExpression(exp, cleanExp);
-    printf(cleanExp);
+    std::cin >> exp;
+    result = parseExp(exp);
+    std::cout << "result = " << result << std::endl;
     return 0;
 }
