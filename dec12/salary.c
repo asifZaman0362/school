@@ -2,8 +2,16 @@
 #include <stdlib.h>
 
 
+#if defined(_WIN32_) || defined(_WIN64_)
+#define clear() system("cls")
+#endif
+#ifdef linux
+#define clear() system("clear")
+#endif
+
+
 void printSalary(float BP, float HRA, float DA, float net) {
-    system("clear");
+    clear();
     printf("\n\n");
     printf("\t╔═══════════════════════════════════════╗\n");
     printf("\t║ SALARY SLIP                           ║\n");

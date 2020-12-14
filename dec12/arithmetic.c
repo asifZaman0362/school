@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+#if defined(_WIN32_) || defined(_WIN64_)
+#define clear() system("cls")
+#endif
+#ifdef linux
 #define clear() system("clear")
+#endif
 
 
 int getChoice() {

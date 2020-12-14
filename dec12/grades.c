@@ -2,6 +2,14 @@
 #include <stdlib.h>
 
 
+#if defined(_WIN32_) || defined(_WIN64_)
+#define clear() system("cls")
+#endif
+#ifdef linux
+#define clear() system("clear")
+#endif
+
+
 const char* getGrade(int marks) {
 
     switch (marks / 5) {
@@ -38,7 +46,7 @@ int main() {
     int marks = 0;
     char grade;
 
-    //system("clear");
+    clear();
     while(1) {
         printf("Enter the marks obtained by the student >> ");
         scanf("%d", &marks);
