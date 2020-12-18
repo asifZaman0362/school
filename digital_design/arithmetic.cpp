@@ -18,7 +18,21 @@ namespace tst {
 
 	inline bool isPreffered(char c, char c1) {
 		if ((c == '+'|| c=='-') && (c1 == '/' || c1 == '*')) return true;
+		else if ((c == '+' || c == '-') && (c1 == '+' || c1 == '-')) return true;
+		else if ((c == '/' || c == '*') && (c1 == '/' || c1 == '*')) return true;
 		else return false;
+	}
+
+	inline int todigit(char c) {
+		return c - '0';
+	}
+
+	inline float math(int a, int b, char op) {
+		if (op == '+') return a + b;
+		else if (op == '-') return a - b;
+		else if (op == '*') return a * b;
+		else if (op == '/') return a / b;
+		else return 0;
 	}
 
     inline std::string reverse(std::string str) {
@@ -42,9 +56,9 @@ namespace tst {
                         char op = opStack.top();
                         opStack.pop();
                         numStack.push(op);
-                    }
+                    } opStack.pop();
                 }
-				if (opStack.empty()) opStack.push(cstr[i]);
+				else if (opStack.empty()) opStack.push(cstr[i]);
                 else if (isPreffered(cstr[i], opStack.top())) {
                     char op = opStack.top();
                     opStack.pop();
@@ -71,7 +85,21 @@ namespace tst {
 	}
 
 	float ParsePostfix(std::string exp) {
-
+		std::stack<char> mainStack;
+		std::stack<float> numStack;
+		for (int i = 0; i < exp.length(); i++) {
+			if (isdigit(exp.at(i))) {
+				numStack.push(todigit(exp.at(i)));
+			} else if (isoperator(exp.at(i))) {
+				int a = numStack.top();
+				numStack.pop();
+				int b = numStack.top();
+				numStack.pop();
+				float result = math(b, a, exp.at(i));
+				numStack.push(result);
+			}
+		}
+		return numStack.top();
 	}
 
 	std::string CleanupExpession(const std::string str) {
@@ -101,7 +129,7 @@ int main() {
 	std::cout << clean_exp << std::endl;
 	std::string postfix = tst::ConvertToPostfix(clean_exp);
 	std::cout << postfix << std::endl;
-	//float result = tst::ParsePostfix(clean_exp);
-	//std::cout << clean_exp << " = " << result << std::endl;
+	float result = tst::ParsePostfix(postfix);
+	std::cout << clean_exp << " = " << result << std::endl;
     return 0;
 }
