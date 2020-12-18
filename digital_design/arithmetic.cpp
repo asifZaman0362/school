@@ -60,10 +60,12 @@ namespace tst {
                 }
 				else if (opStack.empty()) opStack.push(cstr[i]);
                 else if (isPreffered(cstr[i], opStack.top())) {
-                    char op = opStack.top();
-                    opStack.pop();
-                    opStack.push(cstr[i]);
-                    numStack.push(op);
+					while (!opStack.empty() && (cstr[i], opStack.top())) {
+						char op = opStack.top();
+						opStack.pop();
+						numStack.push(op);
+					}
+					opStack.push(cstr[i]);
                 } else opStack.push(cstr[i]);
 			}
             i++;
