@@ -43,6 +43,18 @@ namespace tst {
         return stream.str();
     }
 
+	float parseNum(std::string str) {
+		int i = 0, dec = str.length();
+		float num = 0;
+		while (str[i] != '\0') {
+			if (str[i] == '.') dec = i;
+			else if (isdigit(str[i])) num += num * 10 + todigit(str[i]);
+			else return -1;
+		}
+		num /= dec == str.length() == dec ? 10 * str.length() - dec - 1 : 1;
+		return num;
+	}
+
 	std::string ConvertToPostfix(const std::string str) {
 		std::stringstream stream;
         
