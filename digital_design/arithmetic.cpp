@@ -35,13 +35,13 @@ namespace tst {
 		else return 0;
 	}
 
-    inline std::string reverse(std::string str) {
-        std::stringstream stream;
-        for (int i = str.length()-1; i >= 0; i--) {
-            stream << str.c_str()[i];
-        }
-        return stream.str();
-    }
+	inline std::string reverse(std::string str) {
+		std::stringstream stream;
+		for (int i = str.length()-1; i >= 0; i--) {
+			stream << str.c_str()[i];
+		}
+		return stream.str();
+	}
 
 	inline float pow(float a, int b) {
 		float prod = 1;
@@ -63,46 +63,49 @@ namespace tst {
 	}
 
 	std::string ConvertToPostfix(const std::string str) {
+		
 		std::stringstream stream;
-        
-        const char* cstr = str.c_str();
+
+		const char* cstr = str.c_str();
 		int i = 0;
 		while (cstr[i] != '\0') {
 			if (isdigit(cstr[i])) numStack.push(cstr[i]);
 			else {
-                if (cstr[i] == ')') {
-                    while (opStack.top() != '(') {
-                        char op = opStack.top();
-                        opStack.pop();
-                        numStack.push(op);
-                    } opStack.pop();
-                }
-				else if (opStack.empty()) opStack.push(cstr[i]);
-                else if (isPreffered(cstr[i], opStack.top())) {
-					while (!opStack.empty() && (cstr[i], opStack.top())) {
+				if (cstr[i] == ')') {
+					while (opStack.top() != '(') {
 						char op = opStack.top();
 						opStack.pop();
 						numStack.push(op);
+					} opStack.pop();
+				}
+				else if (opStack.empty()) opStack.push(cstr[i]);
+				else if (isPreffered(cstr[i], opStack.top())) {
+					while (!opStack.empty() && (cstr[i], opStack.top())) {
+					char op = opStack.top();
+					opStack.pop();
+					numStack.push(op);
 					}
 					opStack.push(cstr[i]);
-                } else opStack.push(cstr[i]);
+				} else opStack.push(cstr[i]);
 			}
-            i++;
+			i++;
 		}
-        while (!numStack.empty()) {
-            stream << numStack.top();
-            numStack.pop();
-        }
-        std::string st1 = reverse(stream.str());
-        std::stringstream stream2;
-        while (!opStack.empty()) {
-            stream2 << opStack.top();
-            opStack.pop();
-        }
-        std::string st2 = stream2.str();
-        std::stringstream strf;
-        strf << st1 << st2;
-        return strf.str();
+		while (!numStack.empty()) {
+			stream << numStack.top();
+			numStack.pop();
+		}
+		std::string st1 = reverse(stream.str());
+		std::stringstream stream2;
+		while (!opStack.empty()) {
+			stream2 << opStack.top();
+			opStack.pop();
+		}
+		std::string st2 = stream2.str();
+		std::stringstream strf;
+		strf << st1 << st2;
+
+		return strf.str();
+	
 	}
 
 	float ParsePostfix(std::string exp) {
@@ -132,7 +135,7 @@ namespace tst {
 			else if (tst::isdigit(cstr[i]) || tst::isoperator(cstr[i])) {
 				sstr << cstr[i];
 			} else break;
-            i++;
+			i++;
 		}
 
 		return sstr.str();
