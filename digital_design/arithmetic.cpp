@@ -5,7 +5,7 @@
 
 namespace tst {
 
-	std::stack<char> numStack;
+	std::stack<std::string> numStack;
 	std::stack<char> opStack;
 
 	inline bool isdigit(char c) {
@@ -49,6 +49,12 @@ namespace tst {
 		return prod;
 	}
 
+	inline std::string ToString(char c) {
+		std::stringstream stream;
+		stream << c;
+		return stream.str();
+	}
+
 	float parseNum(std::string str) {
 		int i = 0, dec = str.length();
 		float num = 0;
@@ -65,25 +71,33 @@ namespace tst {
 	std::string ConvertToPostfix(const std::string str) {
 		
 		std::stringstream stream;
+		std::stringstream numstring;
 
 		const char* cstr = str.c_str();
 		int i = 0;
 		while (cstr[i] != '\0') {
-			if (isdigit(cstr[i])) numStack.push(cstr[i]);
+			if (isdigit(cstr[i]) || cstr[i] == '.') {
+				numstring << cstr[i];
+				std::cout << numstring.str() << std::endl;
+				if (isoperator(cstr[i+1]) || cstr[i+1] == '\0') {
+					numStack.push(numstring.str());
+					numstring.str("");
+				}
+			}
 			else {
 				if (cstr[i] == ')') {
 					while (opStack.top() != '(') {
 						char op = opStack.top();
 						opStack.pop();
-						numStack.push(op);
+						numStack.push(ToString(op));
 					} opStack.pop();
 				}
 				else if (opStack.empty()) opStack.push(cstr[i]);
 				else if (isPreffered(cstr[i], opStack.top())) {
 					while (!opStack.empty() && (cstr[i], opStack.top())) {
-					char op = opStack.top();
-					opStack.pop();
-					numStack.push(op);
+						char op = opStack.top();
+						opStack.pop();
+						numStack.push(ToString(op));
 					}
 					opStack.push(cstr[i]);
 				} else opStack.push(cstr[i]);
@@ -144,12 +158,16 @@ namespace tst {
 }
 
 int main() {
-	std::cout << "Enter a number : ";
-	std::string str;
-	float num;
-	std::cin >> str;
-	num = tst::parseNum(str);
-	if (num < 0) std::cout << "Failed to parse!" << std::endl;
-	else std::cout << num << std::endl;
+	// std::cout << "Enter a number : ";
+	// std::string str;
+	// float num;
+	// std::cin >> str;
+	// num = tst::parseNum(str);
+	// if (num < 0) std::cout << "Failed to parse!" << std::endl;
+	// else std::cout << num << std::endl;
+	std::cout << "Enter an expression : ";
+	std::string exp;
+	std::cin >> exp;
+	std::cout << "Parsed : " << tst::ConvertToPostfix(exp) << std::endl;
     return 0;
 }
