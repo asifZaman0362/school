@@ -43,15 +43,22 @@ namespace tst {
         return stream.str();
     }
 
+	inline float pow(float a, int b) {
+		float prod = 1;
+		for (int i = 0; i < b; i++) prod *= a;
+		return prod;
+	}
+
 	float parseNum(std::string str) {
 		int i = 0, dec = str.length();
 		float num = 0;
-		while (str[i] != '\0') {
+		while (i < str.length()) {
 			if (str[i] == '.') dec = i;
-			else if (isdigit(str[i])) num += num * 10 + todigit(str[i]);
+			else if (isdigit(str[i])) num = num * 10 + todigit(str[i]);
 			else return -1;
+			i++;
 		}
-		num /= dec == str.length() == dec ? 10 * str.length() - dec - 1 : 1;
+		if (dec != str.length()) num = num / pow(10, str.length() - dec - 1);
 		return num;
 	}
 
@@ -134,16 +141,12 @@ namespace tst {
 }
 
 int main() {
-	bool flag;
-	std::cout << "Enter an arithmetic expression : ";
-	char exp[100];
-	fgets(exp, 100, stdin);
-	std::cout << exp << std::endl;
-    std::string clean_exp = tst::CleanupExpession(exp);
-	std::cout << clean_exp << std::endl;
-	std::string postfix = tst::ConvertToPostfix(clean_exp);
-	std::cout << postfix << std::endl;
-	float result = tst::ParsePostfix(postfix);
-	std::cout << clean_exp << " = " << result << std::endl;
+	std::cout << "Enter a number : ";
+	std::string str;
+	float num;
+	std::cin >> str;
+	num = tst::parseNum(str);
+	if (num < 0) std::cout << "Failed to parse!" << std::endl;
+	else std::cout << num << std::endl;
     return 0;
 }
