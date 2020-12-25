@@ -27,11 +27,11 @@ namespace tst {
 		return c - '0';
 	}
 
-	inline float math(int a, int b, char op) {
+	inline float math(float a, float b, char op) {
 		if (op == '+') return a + b;
 		else if (op == '-') return a - b;
 		else if (op == '*') return a * b;
-		else if (op == '/') return a / b;
+		else if (op == '/') return (float)a / b;
 		else return 0;
 	}
 
@@ -113,11 +113,11 @@ namespace tst {
 		std::stack<float> numStack;
 		for (int i = 0; i < exp.length(); i++) {
 			if (isdigit(exp.at(i))) {
-				numStack.push(todigit(exp.at(i)));
+				numStack.push((float)todigit(exp.at(i)));
 			} else if (isoperator(exp.at(i))) {
-				int a = numStack.top();
+				float a = numStack.top();
 				numStack.pop();
-				int b = numStack.top();
+				float b = numStack.top();
 				numStack.pop();
 				float result = math(b, a, exp.at(i));
 				numStack.push(result);
@@ -144,12 +144,9 @@ namespace tst {
 }
 
 int main() {
-	std::cout << "Enter a number : ";
-	std::string str;
-	float num;
-	std::cin >> str;
-	num = tst::parseNum(str);
-	if (num < 0) std::cout << "Failed to parse!" << std::endl;
-	else std::cout << num << std::endl;
+	std::string exp;
+	std::cin >> exp;
+	std::cout << tst::ConvertToPostfix(exp) << std::endl;
+	std::cout << tst::ParsePostfix(tst::ConvertToPostfix(exp)) << std::endl;
     return 0;
 }
