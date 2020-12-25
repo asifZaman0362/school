@@ -37,7 +37,7 @@ namespace tst {
 	}
 
 
-	inline float math(int a, int b, char op) {
+	inline float math(float a, float b, char op) {
 		if (op == '+') return a + b;
 		else if (op == '-') return a - b;
 		else if (op == '*') return a * b;
@@ -57,15 +57,11 @@ namespace tst {
 	}
 
 	inline std::string reverse(std::string str, std::vector<std::string> p_numList) {
-		std::vector<std::string> revVector;
-		for (int i = p_numList.size() - 1; i >= 0; i--) {
-			revVector.push_back(p_numList[i]);
-		}
 		std::stringstream stream;
 		for (int i = str.length()-1; i >= 0; i--) {
 			stream << str.c_str()[i];
 		}
-		return formatNumbers(stream.str(), revVector);
+		return formatNumbers(stream.str(), p_numList);
 	}
 
 	inline float pow(float a, int b) {
@@ -97,7 +93,6 @@ namespace tst {
 		while (cstr[i] != '\0') {
 			if (isdigit(cstr[i]) || cstr[i] == '.') {
 				numstring << cstr[i];
-				std::cout << numstring.str() << std::endl;
 				if (isoperator(cstr[i+1]) || cstr[i+1] == '\0') {
 					numStack.push("#");
 					numList.push_back(numstring.str());
@@ -150,15 +145,14 @@ namespace tst {
 		for (int i = 0; i < exp.length(); i++) {
 			if (isdigit(exp[i]) || exp[i] == '.') {
 				numstring << exp[i];
-				std::cout << numstring.str() << std::endl;
 				if (isoperator(exp[i+1]) || exp[i+1] == '\0' || exp[i+1] == ';') {
 					numStack.push(parseNum(numstring.str()));
 					numstring.str("");
 				}
 			} else if (isoperator(exp[i])) {
-				int a = numStack.top();
+				float a = numStack.top();
 				numStack.pop();
-				int b = numStack.top();
+				float b = numStack.top();
 				numStack.pop();
 				float result = math(b, a, exp.at(i));
 				numStack.push(result);
@@ -185,14 +179,6 @@ namespace tst {
 }
 
 int main() {
-	// std::cout << "Enter a number : ";
-	// std::string str;
-	// float num;
-	// std::cin >> str;
-	// num = tst::parseNum(str);
-	// if (num < 0) std::cout << "Failed to parse!" << std::endl;
-	// else std::cout << num << std::endl;
-
 	std::cout << "Enter an expression : ";
 	std::string exp;
 	std::cin >> exp;
