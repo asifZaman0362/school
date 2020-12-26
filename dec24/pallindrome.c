@@ -15,6 +15,7 @@ int main() {
             num /= 10;
         }
         if (rev == orig) printf("%d is a pallindrome.\n", orig);
+        else printf("%d is not a pallindrome.\n", orig);
     }
     // Alternatively, using strings
     else {
