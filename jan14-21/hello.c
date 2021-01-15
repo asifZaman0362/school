@@ -1,7 +1,6 @@
 #include <stdio.h>
 
 int main() {
-    const char* str = "Hello World!";
-    for (int i = 0; i < 10; i++) printf("%s\n", str);
+    for (int i = 0; i < 10; i++) printf("Hello World!\n");
     return 0;
 }
