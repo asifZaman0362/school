@@ -1,0 +1,22 @@
+#ifndef _EMPLOYEE_H_
+#define _EMPLOYEE_H_
+
+typedef unsigned int uint;
+typedef unsigned short ushort;
+
+struct Address {
+    char city[30];
+    char street[30];
+    uint zip_code;
+};
+
+struct Employee {
+    ushort id;
+    char first_name[30];
+    char last_name[30];
+    char gender;
+    uint age;
+    struct Address addr;
+};
+
+#endif

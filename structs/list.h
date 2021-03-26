@@ -1,29 +1,33 @@
 #ifndef _LIST_H_
 #define _LIST_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+
+
 typedef unsigned int uint;
 
-struct Node* {
+struct Node {
     struct Employee* data;
     struct Node* next;
     struct Node* prev;
 };
 
-struct Node* PushFront(Node* item, Node** head) {
+struct Node* PushFront(struct Node* item, struct Node** head) {
     item->next = *head;
     (*head)->prev = item;
     *head = item;
     return item;
 }
 
-struct Node* PushBack(Node* item, Node** tail) {
+struct Node* PushBack(struct Node* item, struct Node** tail) {
     item->prev = *tail;
     (*tail)->next = item;
     *tail = item;
     return item;
 }
 
-struct Node* PopFront(Node** head) {
+struct Node* PopFront(struct Node** head) {
     free(*head);
     free((*head)->data);
     *head = (*head)->prev;
@@ -31,7 +35,7 @@ struct Node* PopFront(Node** head) {
     return *head;
 }
 
-struct Node* PopBack(Node* tail) {
+struct Node* PopBack(struct Node** tail) {
     free(*tail);
     free((*tail)->data);
     *tail = (*tail)->next;
