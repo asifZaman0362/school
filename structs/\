@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "employee.h"
+
 
 typedef unsigned int uint;
 
@@ -14,10 +14,6 @@ struct Node {
 };
 
 struct Node* PushFront(struct Node* item, struct Node** head) {
-    if (*head == NULL) {
-        *head = item;
-        return item;
-    }
     item->next = *head;
     (*head)->prev = item;
     *head = item;
@@ -25,10 +21,6 @@ struct Node* PushFront(struct Node* item, struct Node** head) {
 }
 
 struct Node* PushBack(struct Node* item, struct Node** tail) {
-    if (*tail == NULL) {
-        *tail = item;
-        return item;
-    }
     item->prev = *tail;
     (*tail)->next = item;
     *tail = item;
@@ -37,6 +29,7 @@ struct Node* PushBack(struct Node* item, struct Node** tail) {
 
 struct Node* PopFront(struct Node** head) {
     free(*head);
+    free((*head)->data);
     *head = (*head)->prev;
     (*head)->prev = NULL;
     return *head;
@@ -44,6 +37,7 @@ struct Node* PopFront(struct Node** head) {
 
 struct Node* PopBack(struct Node** tail) {
     free(*tail);
+    free((*tail)->data);
     *tail = (*tail)->next;
     (*tail)->next = NULL;
     return *tail;

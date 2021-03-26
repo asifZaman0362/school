@@ -8,6 +8,7 @@ typedef unsigned short ushort;
 typedef unsigned long ulong;
 typedef unsigned int uint;
 typedef unsigned char byte;
+typedef unsigned char bool;
 
 #if defined(WIN_32) || defined(WIN_64)
 #define clear() system("cls")
@@ -35,6 +36,8 @@ typedef unsigned char byte;
 #define TERMINAL 1
 #define SERIOUS 2
 
+#define true 1
+#define false 0
 
 void log_err(const char* mssg, ushort severity) {
     printf("\n\t%sError: %s\n\n", RED, mssg);

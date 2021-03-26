@@ -11,11 +11,11 @@ struct Address {
 };
 
 struct Employee {
-    ushort id;
+    uint id;
     char first_name[30];
     char last_name[30];
     char gender;
-    uint age;
+    ushort age;
     struct Address addr;
 };
 
