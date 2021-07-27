@@ -1,15 +1,22 @@
 namespace tst {
 
+    template<typename T>
+    static inline void swap(T* a, T* b) {
+        T c = *a;
+        *a = *b;
+        *b = c;
+    }
+
     static int partition(int* arr, int lo, int hi) {
         int pivot = arr[hi];
         int i = lo;
         for (int j = lo; j < hi; j++) {
             if (arr[j] < pivot) {
-                int t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+                swap(arr+i, arr+j);
                 i++;
             }
         }
-        int t = arr[i]; arr[i] = arr[hi]; arr[hi] = t;
+        swap(arr+i, arr+hi);
         return i;
     }
 
@@ -25,12 +32,24 @@ namespace tst {
         for (int i = 1; i < n-1; i++) {
             for (int j = 0; j < n - i; j++) {
                 if (arr[j] > arr[j+1]) {
-                    int t = arr[j+1];
-                    arr[j+1] = arr[j];
-                    arr[j] = t;
+                    swap(arr+j, arr+j+1);
                 }
             }
         }
     }
+
+    void ssort(int* arr, int n) {
+        int i = 0;
+        while (i < n-1) {
+            int sel = i;
+            for (int j = i+1; j < n; j++) {
+                if (arr[j] < arr[sel]) sel = j;
+            }
+            if (sel != i)
+                swap(arr+sel, arr+i);
+            i++;
+        }
+    }
+
 
 }
