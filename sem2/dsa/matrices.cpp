@@ -5,14 +5,14 @@
     for(int i = 0; i < x; i++) \
     tst::printarr(A+i*y, y, "|\t ", "\t ", " \t|");
 
-int *getMat(int &x, int &y) {
+void getMat(int *mat, int &x, int &y) {
     if (x < 0 || y < 0) {
         std::cout << "Enter row size: ";
         std::cin >> x;
         std::cout << "Enter column: ";
         std::cin >> y;
     }
-    int *mat = new int[x*y];
+
     std::cout << "Enter matrix entries:\n";
     for (int i = 0; i < x; i++) {
         for (int j = 0; j < y; j++) {
@@ -20,27 +20,24 @@ int *getMat(int &x, int &y) {
             std::cin >> mat[i*y+j];
         }
     }
-    return mat;
 }
 
-int *addMat(int *a, int *b, int x, int y) {
-    int *s = new int[x*y];
+void addMat(int *a, int *b, int *c, int x, int y) {
     for (int i = 0; i < x; i++)
         for (int j = 0; j < y; j++)
-            s[i*y+j] = a[i*y+j] + b[i*y+j];
-    return s;
+            c[i*y+j] = a[i*y+j] + b[i*y+j];
 }
 
 
 int main() {
-    int *matA, *matB, *matC, x = 3, y = 3;
+    int matA[3*3], matB[3*3], matC[3*3], x = 3, y = 3;
 
     std::cout << "\n\nEnter first matrix:\n";
-    matA = getMat(x, y);
+    getMat(matA, x, y);
     std::cout << "\n\nEnter second matrix:\n";
-    matB = getMat(x, y);
+    getMat(matB, x, y);
 
-    matC = addMat(matA, matB, x, y);
+    addMat(matA, matB, matC, x, y);
     
     tst::clear_screen();
     std::cout << "The entered matrices are :\n\n";
@@ -49,5 +46,6 @@ int main() {
     PRINT_MAT(matB, x, y);
     std::cout << "\n\nThe sum of the matrices = \n\n";
     PRINT_MAT(matC, x, y);
+    
     return 0;
 }
