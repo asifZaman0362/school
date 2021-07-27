@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
+#include <time.h>
 
 namespace tst {
 
@@ -22,5 +23,12 @@ namespace tst {
         system("clear");
 #endif
     }
+
+    inline int* getRandomArray(int *arr, int len, int max=100) {
+        //srand(time(0));
+        for (int i = 0; i < len; i++) arr[i] = rand() % max;
+        return arr;
+    }
+
 
 }
