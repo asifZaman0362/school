@@ -12,6 +12,7 @@ struct Student {
 };
 
 struct Student* GetStudent() {
+    //printf("size of stud = %zu", sizeof(struct Student));
     struct Student* s = malloc(sizeof(struct Student));
     
     printf("Enter student details: \n");
