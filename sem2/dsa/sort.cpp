@@ -100,10 +100,14 @@ namespace tst {
     template<typename T>
     void bsort(T* arr, int n, ld cmp)
     {
-        for (int i = 1; i < n; i++) {
+        bool sorted = false;
+        int i = 1;
+        while ((i < n) && (!sorted)) {
+            sorted = true;
             for (int j = 0; j < n - i; j++) {
                 if (cmp(arr[j+1], arr[j])) {
                     swap(arr+j, arr+j+1);
+                    sorted = false;
                 }
             }
         }

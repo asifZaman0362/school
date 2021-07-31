@@ -5,7 +5,7 @@
 int main() {
 
     srand(time(0));
-    const int n = 2000, tc = 500;
+    const int n = 10000, tc = 500;
     int t = clock();
     std::function<bool(int, int)> comp = [](int a, int b) { return a < b; };
     std::function<bool(int, int)> chck = [](int a, int b) { return a <= b; };
