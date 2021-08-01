@@ -1,17 +1,19 @@
 #include <iostream>
 
-void isort(int* arr, const int n)
+void bsort(int* arr, const int n)
 {
+    bool sorted = false;
     int i = 1;
-    while (i < n) {
-        int sel = arr[i];
-        int j = i - 1;
-        while ((j >= 0) && (sel < arr[j])) {
-            arr[j+1] = arr[j];
-            j--;
-        }
-        arr[j+1] = sel;
-        i++;
+    while ((i < n) && (!sorted)) {
+        sorted = true;
+        for (int j = 0; j < n - i; j++) {
+            if (arr[j+1] < arr[j]) {
+                int x = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = x;
+                sorted = false;
+            }
+         }
     }
 }
 
@@ -23,7 +25,7 @@ int main() {
         std::cout << ">> ";
         std::cin >> arr[i];
     }
-    isort(arr, size);
+    bsort(arr, size);
     std::cout << "The sorted array is:\n";
     for (int i = 0; i < size; i++)
         std::cout << arr[i] << "; ";

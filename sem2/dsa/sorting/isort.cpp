@@ -1,3 +1,19 @@
+#include <iostream>
+
+void isort(int* arr, const int n)
+{
+    int i = 1;
+    while (i < n) {
+        int sel = arr[i];
+        int j = i - 1;
+        while ((j >= 0) && (sel < arr[j])) {
+            arr[j+1] = arr[j];
+            j--;
+        }
+        arr[j+1] = sel;
+        i++;
+    }
+}
 
 int main() {
     const int size = 10;
@@ -15,3 +31,4 @@ int main() {
 
     return 0;
 }
+
