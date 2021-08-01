@@ -5,18 +5,16 @@
 int main() {
 
     srand(time(0));
-    const int n = 10000, tc = 500;
+    const int n = 100, tc = 50;
     int t = clock();
-    std::function<bool(int, int)> comp = [](int a, int b) { return a < b; };
-    std::function<bool(int, int)> chck = [](int a, int b) { return a <= b; };
     int arr[n];
     
     //tst::clear_screen();
     // Merge sort
     for (int i = 0; i < tc; i++) {
         tst::getRandomArray(arr, n);
-        tst::msort(arr, n, comp);
-        assert(tst::check_sorted(arr, n, chck));
+        tst::msort(arr, n);
+        assert(tst::check_sorted(arr, n));
     }
     std::cout << tc << " merge sort tests passed!\n";
     t = clock() - t;
@@ -26,8 +24,8 @@ int main() {
     // Quick sort
     for (int i = 0; i < tc; i++) {
         tst::getRandomArray(arr, n);
-        tst::qsort(arr, 0, n-1, comp);
-        assert(tst::check_sorted(arr, n, chck));
+        tst::qsort(arr, 0, n-1);
+        assert(tst::check_sorted(arr, n));
     }
     std::cout << tc << " quicksort tests passed!\n";
     t = clock() - t;
@@ -37,8 +35,8 @@ int main() {
     // Bubble sort
     for (int i = 0; i < tc; i++) {
         tst::getRandomArray(arr, n);
-        tst::isort(arr, n, comp);
-        assert(tst::check_sorted(arr, n, chck));
+        tst::isort(arr, n);
+        assert(tst::check_sorted(arr, n));
     }
     std::cout << tc << " insertion sort tests passed!\n";
     t = clock() - t;
@@ -49,8 +47,8 @@ int main() {
     tst::getRandomArray(arr, n);
     for (int i = 0; i < tc; i++) {
         tst::getRandomArray(arr, n);
-        tst::ssort(arr, n, comp);
-        assert(tst::check_sorted(arr, n, chck));
+        tst::ssort(arr, n);
+        assert(tst::check_sorted(arr, n));
     }
     std::cout << tc << " selection sort test passed!\n";
     t = clock() - t;
@@ -60,8 +58,8 @@ int main() {
     // Insertion sort
     for (int i = 0; i < tc; i++) {
         tst::getRandomArray(arr, n);
-        tst::bsort(arr, n, comp);
-        assert(tst::check_sorted(arr, n, chck));
+        tst::bsort(arr, n);
+        assert(tst::check_sorted(arr, n));
     }
     std::cout << tc << " bubble sort tests passed!\n";
     t = clock() - t;
