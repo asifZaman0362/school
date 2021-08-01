@@ -36,7 +36,7 @@ namespace tst {
     }*/
 
     void benchmark(const char* msg, unsigned int ref_time) {
-        dtime = clock() - ref_time;
+        int dtime = clock() - ref_time;
         std::cout << msg << "\n";
         std::cout << "Took " << dtime/CLOCKS_PER_SEC << " seconds.\n";
     }
