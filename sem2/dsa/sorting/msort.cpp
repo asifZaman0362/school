@@ -4,18 +4,24 @@ inline int get_half(const int a) {
     return (a + a % 2)/2;
 }
 
-void merge(int* a, int* b, int* c, int* d, const int n, int m)
+void merge(int* a, int* b, int* c, int* q, const int n, int m)
 {
-    int q_len = 0, q_ptr = 0;
+    int q_len = 0, q_ptr = 0; // Setup Queue parameters
     int i = 0;
     int l = n + m;
-    d[0] = a[0];
+    //q[0] = a[0];
     for (int k = 0; k < l; k++) {
-        if (k < n) d[k] = a[k];
-        if ((i < m) && ((q_ptr >= n) || (b[i] < d[q_ptr]))) {
+        if (k < n) q[k] = a[k]; // Copy the left side to the queue
+        // Since the queue is already sorted, by principle, 
+        // check against the lowest (first) term in it
+        if ((i < m) && ((q_ptr >= n) || (b[i] < q[q_ptr]))) {
+            // If the current element in the right half exceeds the
+            // queue (left half), set the current element to that
             c[k] = b[i++];
         } else {
-            c[k] = d[q_ptr];
+            // If the queue has the smaller element, move that to
+            // the current position instead and update the queue
+            c[k] = q[q_ptr];
             q_ptr++;
         }
     }
@@ -35,6 +41,8 @@ int* split_merge(int* a, int* b, const int n)
 
 void msort(int* a, const int n)
 {
+    // Makes a one-time 
+    // allocation of 1/2(n) for bufferring
     int b[get_half(n)];
     split_merge(a, b, n);
 }
