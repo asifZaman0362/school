@@ -1,4 +1,5 @@
 #include <functional>
+#include <cassert>
 #include "sort.cpp"
 #include "zutils.hpp"
 

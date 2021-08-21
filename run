@@ -1,0 +1,8 @@
+#!/bin/bash
+
+binname=$1.app
+if [ ! -d 'bin' ]; then
+    mkdir bin
+fi
+g++ $1.cpp -o bin/$binname
+exec "bin/$binname"
