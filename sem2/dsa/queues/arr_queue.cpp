@@ -22,7 +22,7 @@
  * (rear < front)
  * 
  * The queue full state is given by:
- * rear == size - 1
+ * rear >= size - 1
  *
 */
 
@@ -38,7 +38,7 @@ inline bool isEmpty (int rear, int front)
 
 void enqueue (int queue[], int size, int& rear, int x)
 {
-    if (rear >= size)
+    if (rear >= size - 1)
     {
         std::cout << "Queue overflow!" << std::endl;
         exit(-1);
