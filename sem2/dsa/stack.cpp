@@ -18,7 +18,7 @@ public:
     int Pop ()
     {
         if (m_top > 0)
-            return m_arr[m_top--];
+            return m_arr[--m_top];
         else
         {
             std::cerr << "Stack underflow!\n";
@@ -29,7 +29,7 @@ public:
     int Peep ()
     {
         if (m_top > 0)
-            return m_arr[m_top];
+            return m_arr[m_top - 1];
         else
         {
             std::cerr << "Stack is empty!\n";
