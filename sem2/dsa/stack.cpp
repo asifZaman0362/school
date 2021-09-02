@@ -1,92 +1,88 @@
 #include <iostream>
 
+#define MIN -2147483648
+
 class Stack
 {
 public:
-    Stack (const size_t max) : m_max(max), m_top(0), m_arr{}
-    {}
-    
-    void Push (const int item)
+    Stack (const size_t size) : m_size(size), m_top(0), m_arr{} {}
+
+    void Push (int item)
     {
-        if (m_top >= m_max)
-        {
-            std::cerr << "Stack overflow!" << std::endl;
-            return;
-        } else m_arr[m_top++] = item;
+        if (m_top < m_size)
+            m_arr[m_top++] = item;
+        else
+            std::cerr << "Stack overflow!\n";
     }
 
     int Pop ()
     {
-        if (m_top <= 0)
+        if (m_top > 0)
+            return m_arr[m_top--];
+        else
         {
-            std::cerr << "Stack Underflow!" << std::endl;
-            return 0;
-        } else return m_arr[--m_top];
+            std::cerr << "Stack underflow!\n";
+            return MIN;
+        }
     }
 
     int Peep ()
     {
-        if (m_top <= 0)
+        if (m_top > 0)
+            return m_arr[m_top];
+        else
         {
-            std::cerr << "Stack is empty!" << std::endl;
-            return 0;
-        } else return m_arr[m_top-1];
+            std::cerr << "Stack is empty!\n";
+            return MIN;
+        }
     }
 
     void Display ()
     {
-        if (m_top <= 0)
-        {
-            std::cout << "Stack is empty!" << std::endl;
-            return;
-        }
-        else
-        {
-            std::cout << "\n\033[0;35mThe stack is:\n";
-            for (int i = 0; i < m_top; i++)
-                std::cout << "\033[0;35m" << i << ":\t" << m_arr[i] << "\033[0m\n";
-        }
+        std::cout << "\nThe stack is:\n";
+        for (size_t i = 0; i < m_top; i++)
+            std::cout << i << ")\t" << m_arr[i] << "\n";
     }
 
 private:
-    const size_t m_max;
+    const size_t m_size;
+    size_t m_top;
     int m_arr[100];
-    int m_top;
 };
+
 
 int main ()
 {
-    Stack stack(30);
-    int opt = 0;
+    Stack stack(10);
+    short opt = 0;
     while (opt != 5)
     {
-        int val;
-        std::cout << "\nSelect an operation:\n";
-        std::cout << "1. Push\n2. Pop\n3. Peep\n4. Display\n5. Quit\n\n: ";
+        std::cout << "Select an operation:\n";
+        std::cout << "1. Push\n2. Pop\n3. Peep\n4. Display\n5. Exit\n\n: ";
         std::cin >> opt;
+        int x;
         switch (opt)
         {
             case 1:
-                std::cout << "Enter the value to insert: ";
-                std::cin >> val;
-                stack.Push(val);
+                std::cout << "Enter a number: ";
+                std::cin >> x;
+                stack.Push(x);
                 break;
             case 2:
-                val = stack.Pop();
-                std::cout << "\033[0;32mPopped item is: " << val << "\033[0m\n";
+                x = stack.Pop();
+                if (x != MIN)
+                    std::cout << "The popped element is: " << x << "\n";
                 break;
             case 3:
-                val = stack.Peep();
-                std::cout << "\033[0;32mThe topmost item is: " << val << "\033[0m\n";
+                x = stack.Peep();
+                if (x != MIN)
+                    std::cout << "The top element is: " << x << "\n";
                 break;
             case 4:
                 stack.Display();
                 break;
-            case 5:
-                opt = 5;
-                break;
             default:
-                std::cout << "Invalid option! Try again...\n";
+                opt = 5;
         }
     }
     return 0;
