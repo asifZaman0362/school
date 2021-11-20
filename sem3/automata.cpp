@@ -33,20 +33,19 @@ State* Evaluate(State* initial, std::string str) {
 }
 
 int main() {
-    State *q0 = new State{}, *q1 = new State{}, *q2 = new State{}, *q3 = new State{};
-    State *qf = q3;
-    q0->transitions.push_back(Transition{"a", q1});
-    q0->transitions.push_back(Transition{"bc", q0});
-    q1->transitions.push_back(Transition{"c", q0});
-    q1->transitions.push_back(Transition{"a", q1});
-    q1->transitions.push_back(Transition{"b", q2});
-    q2->transitions.push_back(Transition{"b", q0});
-    q2->transitions.push_back(Transition{"a", q1});
-    q2->transitions.push_back(Transition{"c", q3});
-    q3->transitions.push_back(Transition{"a", q1});
-    q3->transitions.push_back(Transition{"bc", q0});
-    bool acceptsFirst = Evaluate(q0, "abc") == qf;
-    bool acceptsSecond = Evaluate(q0, "abbcabc") == qf;
+    State Q[4];
+    Q[0].transitions.push_back(Transition{"a", &Q[1]});
+    Q[0].transitions.push_back(Transition{"bc", &Q[0]});
+    Q[1].transitions.push_back(Transition{"c", &Q[0]});
+    Q[1].transitions.push_back(Transition{"a", &Q[1]});
+    Q[1].transitions.push_back(Transition{"b", &Q[2]});
+    Q[2].transitions.push_back(Transition{"b", &Q[0]});
+    Q[2].transitions.push_back(Transition{"a", &Q[1]});
+    Q[2].transitions.push_back(Transition{"c", &Q[3]});
+    Q[3].transitions.push_back(Transition{"a", &Q[1]});
+    Q[3].transitions.push_back(Transition{"bc", &Q[0]});
+    bool acceptsFirst = Evaluate(&Q[0], "abc") == &Q[3];
+    bool acceptsSecond = Evaluate(&Q[0], "abbcabbc") == &Q[3];
     std::cout << acceptsFirst << ";" << acceptsSecond << std::endl;
     return 0;
 }
