@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class NumbersToWords {
+public class SalaryInWords {
 
     public static String GetWords(long number) {
         int length = 0;
@@ -27,14 +27,15 @@ public class NumbersToWords {
             if (number < 20) return digitNames[(int)number];
             else return tens[(int)number / 10] + ((int)number % 10 > 0 ? " " + digitNames[(int)number % 10] : "");
         } else if (length == 1) return digitNames[(int)number];
-        else return "0";
+        else return "";
     }
 
     public static void main(String[] args) {
-        long number;
+        long salary;
         Scanner sc = new Scanner(System.in);
-        number = sc.nextLong();
+        System.out.print("Enter the salary of the employee: ");
+        salary = sc.nextLong();
         sc.close();
-        System.out.println("The number in words is: " + GetWords(number));
+        System.out.println("The salary in words is: " + GetWords(salary) + " Rupees");
     }
 }

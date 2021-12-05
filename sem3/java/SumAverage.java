@@ -21,5 +21,6 @@ public class SumAverage {
         n3 = sc.nextInt();
         System.out.println("The sum of the numbers is : " + Sum(n1, n2, n3));
         System.out.println("The average of the numbers is : " + Average(n1, n2, n3));
+        sc.close();
     }
 }

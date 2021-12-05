@@ -16,5 +16,6 @@ public class VowelCount {
         System.out.println("Enter a string:");
         String str = sc.nextLine();
         System.out.println("There are " + CountVowels(str) + " vowels in the string.");
+        sc.close();
     }
 }
