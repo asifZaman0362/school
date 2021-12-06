@@ -11,7 +11,7 @@ class Cone extends Volume {
 
     private final float PI = 3.14159f;
 
-    public Cone(float pHeight, float pRadius) {
+    public Cone(float pRadius, float pHeight) {
         this.height = pHeight;
         this.radius = pRadius;
     }
