@@ -18,7 +18,9 @@ void bsort(int* arr, const int n)
 }
 
 int main() {
-    const int size = 10;
+    int size;
+    std::cout << "Enter the number of elements: ";
+    std::cin >> size;
     int arr[size];
     std::cout << "Enter " << size << " integers:";
     for (int i = 0; i < size; i++) {

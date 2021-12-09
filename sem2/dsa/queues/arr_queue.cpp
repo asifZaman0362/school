@@ -12,7 +12,7 @@
  * Linear Queue's :
  *
  * A queue has a front index and a rear index.
- * Items are inserted (enqueue'd) into the rear and removed (dequeue'd) from the front.
+ * Items are inserted (Insert'd) into the rear and removed (Remove'd) from the front.
  *
  * A queue starts with the following configuration:
  * front = 0
@@ -36,7 +36,7 @@ inline bool isEmpty (int rear, int front)
     return rear < front;
 }
 
-void enqueue (int queue[], int size, int& rear, int x)
+void insert (int queue[], int size, int& rear, int x)
 {
     if (rear >= size - 1)
     {
@@ -46,7 +46,7 @@ void enqueue (int queue[], int size, int& rear, int x)
     else queue[++rear] = x;
 }
 
-int dequeue (int queue[], int& front, int rear)
+int remove (int queue[], int& front, int rear)
 {
     if (isEmpty(rear, front))
     {
@@ -56,11 +56,11 @@ int dequeue (int queue[], int& front, int rear)
     return queue[front++];
 }
 
-void print (int queue[], int front, int rear)
+void display (int queue[], int front, int rear)
 {
     for (int i = front; i <= rear; i++)
     {
-        std::cout << i << "\t: " << queue[i] << "\n";
+        std::cout << queue[i] << "\n";
     }
 }
 
@@ -74,27 +74,27 @@ int main ()
     while (choice != -1)
     {
         std::cout << "Select an option:\n";
-        std::cout << "1: Enqueue\n2: Dequeue\n3: Print\n4: Quit\n\n:";
+        std::cout << "1: Insert\n2: Remove\n3: Dislay\n4: Quit\n\n:";
         std::cin >> choice;
         switch (choice)
         {
         case 1:
         {
             int var;
-            std::cout << "Value to enqueue: ";
+            std::cout << "Value to Insert: ";
             std::cin >> var;
-            enqueue(queue, size, rear, var);
+            insert(queue, size, rear, var);
             break;
         }
         case 2:
         {
-            int popped = dequeue(queue, front, rear);
-            std::cout << "Dequeued " << popped << "\n";
+            int popped = remove(queue, front, rear);
+            std::cout << "Removed " << popped << "\n";
             break;
         }
         case 3:
         {
-            print(queue, front, rear);
+            display(queue, front, rear);
             break;
         }
         case 4:

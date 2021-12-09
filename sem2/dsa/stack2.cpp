@@ -1,78 +1,64 @@
 #include <iostream>
 #include <stdlib.h>
-#if defined(WIN32) || defined(WIN64)
-#include <conio.h>
-#endif
 
 const unsigned short size = 50;
 int stack[size];
-int TOP;
-
-inline void clear()
-{
-#ifdef linux
-    system("clear");
-#else
-    system("cls");
-#endif
-}
-
-#if !defined(WIN32) || !defined(WIN64)
-inline void getch()
-{
-    char str[100];
-    std::cout << "Enter any key to continue...";
-    std::cin >> str;
-}
-#endif
+int TOP = -1;
 
 
 void push ()
 {
     if (TOP == size)
-        std::cout << "\033[0;31mStack Overflow!\n\n\n\033[0;37m";
+        std::cout << "Stack Overflow!\n\n\n";
     else
     {
         int item;
         std::cout << "Enter the element to push: ";
         std::cin >> item;
-        stack[TOP++] = item;
-        std::cout << "\033[0;33mPushed " << item << " to the stack.\n\n\n\033[0;37m";
+        stack[++TOP] = item;
+        std::cout << "Pushed " << item << " to the stack.\n\n\n";
     }
-    getch();
 }
 
-void pop ()
+int pop ()
 {
-    if (TOP == 0)
-        std::cout << "\033[0;31mStack Underflow!\n\n\n\033[0;37m";
+    if (TOP == -1)
+    {
+        std::cout << "Stack Underflow!\n\n\n";
+        return 0;
+    }
     else
-        std::cout << "\033[0;33mPopped " << stack[--TOP] << " from the stack!\n\n\n\033[0;37m";
-    getch();
+    {
+        std::cout << "Popped " << stack[TOP] << " from the stack!\n\n\n";
+        return stack[TOP--];
+    }
 }
 
-void peep ()
+int peep ()
 {
-    if (TOP == 0)
-        std::cout << "\033[0;31mStack is empty!\n\n\n\033[0;37m";
+    if (TOP == -1)
+    {
+        std::cout << "Stack is empty!\n\n\n";
+        return 0;
+    }
     else
-        std::cout << "\033[0;33mThe topmost element is: " << stack[TOP - 1] << "\n\n\n\033[0;37m";
-    getch();
+    {
+        std::cout << "The topmost element is: " << stack[TOP] << "\n\n\n";
+        return stack[TOP];
+    }
 }
 
 void display ()
 {
-    clear();
-    if (TOP == 0)
-        std::cout << "\033[0;31mStack is empty!\n\n\n\033[0;37m";
+    if (TOP == -1)
+        std::cout << "Stack is empty!\n\n\n";
     else
     {
-        std::cout << "\033[0;33mThe stack is --\n\n";
-        for (int i = 0; i < TOP; i++)
+        std::cout << "The stack is --\n\n";
+        for (int i = 0; i <= TOP; i++)
             std::cout << i + 1 << ". " << stack[i] << "\n";
-        std::cout << "\033[0;37m\n\n\n";
+        std::cout << "\n\n\n";
     }
-    getch();
 }
 
 int main()
@@ -80,7 +66,6 @@ int main()
     int option = 0;
     while (option != 5)
     {
-        clear();
         std::cout << "Select an operation:\n";
         std::cout << "1. Push\n2. Pop\n3. Peep\n4. Display\n5. Quit\n\n: ";
         std::cin >> option;
@@ -102,8 +87,7 @@ int main()
                 option = 5;
                 break;
             default:
-                std::cout << "\033[0;31mUnexpected input! Try again...\n\n\n\033[0;37m";
-                getch();
+                std::cout << "Unexpected input! Try again...";
         }
     }
     return 0;

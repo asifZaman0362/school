@@ -27,9 +27,7 @@ class Triangle {
 public class TrianglePerimeterArea {
     public static void main(String[] args) {
         Triangle tri = new Triangle();
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Area of the triangle = " + tri.GetArea());
         System.out.println("Perimeter of the triangle = " + tri.GetPerimeter());
-        scanner.close();
     }
 }
