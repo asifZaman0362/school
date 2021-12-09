@@ -6,7 +6,7 @@ public class SalaryInWords {
         int length = 0;
         for (long x = number; x > 0; x /= 10) length++;
 
-        String digitNames[] = { "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", 
+        String digitNames[] = { "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", 
 		                        "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen",
                                 "Seventeen", "Eighteen", "Nineteen" };
 	    String tens[] = { "", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety" };
@@ -25,7 +25,7 @@ public class SalaryInWords {
             return GetWords(number / 100) + " Hundred " + (number % 100 > 0 ? "and " + GetWords(number % 100) : "");
         } else if (length == 2) {
             if (number < 20) return digitNames[(int)number];
-            else return tens[(int)number / 10] + ((int)number % 10 > 0 ? " " + digitNames[(int)number % 10] : "");
+            else return tens[(int)number / 10] + (" " + digitNames[(int)number % 10]);
         } else if (length == 1) return digitNames[(int)number];
         else return "";
     }
