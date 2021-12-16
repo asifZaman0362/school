@@ -1,10 +1,24 @@
 #!/bin/bash
 
-binname=$1.app
-if [ ! -d 'bin' ]; then
-    mkdir bin
-fi
-g++ $1.cpp -o bin/$binname
-if [ "$?" -eq "0" ]; then
-    exec "bin/$binname"
+extension="${1##*.}"
+filename="${1%%.*}"
+
+echo "Executing ${extension^^} file"
+
+if [[ "$extension" == "java" ]]; then
+    javac $1
+    java $filename
+    rm *.class
+elif [[ "$extension" == "cpp" ]] || [[ "$extension" == "cxx" ]]; then
+    binname=$filename.app
+    g++ $1 -o $binname
+    "./$binname"
+    rm "$binname"
+elif [[ "$extension" == "py" ]]; then
+    python $1
+elif [[ "$extension" == "c" ]]; then
+    binname=$filename.app
+    gcc $1 -o $binname
+    "./$binname"
+    rm "$binname"
 fi
