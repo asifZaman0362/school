@@ -1,4 +1,3 @@
-package first;
 import java.util.Scanner;
 
 abstract class Volume {
