@@ -1,3 +1,4 @@
+package first;
 class Employee {
     public String name;
     public int joiningYear;

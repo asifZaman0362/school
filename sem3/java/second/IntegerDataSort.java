@@ -1,3 +1,4 @@
+package second;
 import java.util.Scanner;
 
 class Data {
