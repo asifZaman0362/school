@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <title>Armstrong check</title>
+        <script type="text/javascript">
+            function isArmstrong(number) {
+                var x = number;
+                var inverse = 0;
+                while (x > 0) {
+                    inverse = (inverse * 10) + (x % 10);
+                    console.log(x);
+                    x = Math.floor(x / 10);
+                }
+                return inverse == number;
+            }
+            function checkArmstrong() {
+                let numberElement = document.mainForm.armstrong_input;
+                var number = parseInt(numberElement.value);
+                document.getElementById("armstrong_result").innerHTML = "The number is" + (isArmstrong(number) ? "" : " not") + " armstrong.";
+            }
+            function isPrime(number) {
+                if (number == 2) return true;
+                else if (number <= 1) return false;
+                var sqrtCeil = Math.ceil(Math.sqrt(number));
+                for (var i = 2; i < sqrtCeil; i++)
+                    if (number % i === 0)
+                        return false;
+                return true;
+            }
+            function checkPrime() {
+                var prime = true;
+                let numberElement = document.mainForm.prime_input;
+                var number = parseInt(numberElement.value);
+                document.getElementById("prime_result").innerHTML = "The number is" + (isPrime(number) ? "" : " not") + " prime.";
+            }
+        </script>
+    </head>
+    <body>
+        <form name="mainForm">
+            <label for="prime_input">Number to check for prime property: </label>
+            <input type="number" name="prime_input" id="prime_input">
+            <br>
+            <input type="button" value="Check" onclick="checkPrime()">
+            <p id="prime_result"></p>
+            <br>
+            <label for="armstrong_input">Number to check for armstrong property: </label>
+            <input type="number" name="armstrong_input" id="armstrong_input">
+            <br>
+            <input type="button" value="Check" onclick="checkArmstrong()">
+            <p id="armstrong_result"></p>
+        </form>
+    </body>
+</html>
