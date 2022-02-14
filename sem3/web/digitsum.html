@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            function calcSum() {
+                var number = parseInt(document.mainForm.numberInput.value);
+                var sum = 0;
+                while (number > 0) {
+                    sum += number % 10;
+                    number = Math.floor(number / 10);
+                }
+                document.write("Sum of the digits = " + sum);
+            }
+        </script>
+    </head>
+    <body>
+        <form name="mainForm">
+            <input type="number" name="numberInput" placeholder="Number">
+            <input type="button" onclick="calcSum()" value="Calculate">
+        </form>
+    </body>
+</html>

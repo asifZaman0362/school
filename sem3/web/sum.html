@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <script>
+            function getsum() {
+                var x = parseInt(document.form.x.value);
+                var y = parseInt(document.form.y.value);
+                var sum = x + y;
+                document.form.sum.value = sum;
+            }
+        </script>
+        <body>
+            <form name="form">
+                First number:
+                <input type="number" name="x" placeholder="number 1">
+                <br>
+                Second number:
+                <input type="number" name="y" placeholder="number 2">
+                <br>
+                Sum:
+                <input type="number" name="sum" placeholder="number1" disabled>
+                <br>
+                <input type="button" value="calculate" onclick="getsum()">
+            </form>            
+        </body>
+    </head>
+</html>
