@@ -1,29 +1,50 @@
 <html>
     <head>
-        <title>Login Form</title>
         <script type="text/javascript">
-            function authenticate() {
-                let username = document.mainForm.name.value;
-                let password = document.mainForm.password.value;
-                const stored_user = "root";
-                const stored_password = "password";
-                if (username != stored_user || password != stored_password) 
-                    alert("Invalid credentials!");
-                else alert("Login successful!");
+            function validate() {
+                var uname = document.form.uname.value;
+                var unamemodified = uname.toUpperCase();
+                var pass = document.form.pass.value;
+                if (uname.length <= 0) {
+                    alert('Username is empty!');
+                    return false;
+                }
+                for (var i = 0; i < uname.length; i++) {
+                    if (unamemodified.charCodeAt(i) < 65 || unamemodified.charCodeAt(i) > 90) {
+                        alert('Username may only contain letters');
+                        return false;
+                    }
+                }
+                if (pass.length <= 0) {
+                    alert('Password is empty!');
+                    return false;
+                }
+                for (var i = 0; i < pass.length; i++) {
+                    if (pass.charCodeAt(i) > 57 || pass.charCodeAt(i) < 48) {
+                        alert('Password may only contain digits!');
+                        return false;
+                    }
+                }
+                if (uname != 'username') {
+                    alert('Username invalid!');
+                    return false;
+                }
+                if (pass != '1234') {
+                    alert('Password invalid!');
+                    return false;
+                }
+                alert('Login success!');
+                return true;
             }
         </script>
     </head>
     <body>
-        <form name="mainForm">
-            <label for="name">Username: </label>
-            <br>
-            <input type="text" name="name">
-            <br>
-            <label for="password">Password: </label>
-            <br>
-            <input type="password" name="password">
-            <br>
-            <input type="button" value="Login" onclick="authenticate();">
+        <form name="form">
+            Username:
+            <input type="text" name="uname"><br>
+            Password:
+            <input type="text" name="pass"><br>
+            <input type="button" value="login" onclick="validate()">
         </form>
     </body>
 </html>

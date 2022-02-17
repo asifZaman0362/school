@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            var date = new Date();
+            var day = date.getDate().toString();
+            day = day.length == 1 ? '0' + day : day;
+            var month = (date.getMonth() + 1).toString();
+            month = month.length == 1 ? '0' + month : month;
+            var year = date.getFullYear();
+            document.write("Date = " + day + "/" + month + "/" + year);
+        </script>
+    </head>
+</html>
