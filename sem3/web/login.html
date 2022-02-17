@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>Login Form</title>
+        <script type="text/javascript">
+            function authenticate() {
+                let username = document.mainForm.name.value;
+                let password = document.mainForm.password.value;
+                const stored_user = "root";
+                const stored_password = "password";
+                if (username != stored_user || password != stored_password) 
+                    alert("Invalid credentials!");
+                else alert("Login successful!");
+            }
+        </script>
+    </head>
+    <body>
+        <form name="mainForm">
+            <label for="name">Username: </label>
+            <br>
+            <input type="text" name="name">
+            <br>
+            <label for="password">Password: </label>
+            <br>
+            <input type="password" name="password">
+            <br>
+            <input type="button" value="Login" onclick="authenticate();">
+        </form>
+    </body>
+</html>

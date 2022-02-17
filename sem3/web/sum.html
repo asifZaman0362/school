@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>Sum of digits</title>
+        <script type="text/javascript">
+            function getSum() {
+                let num = parseInt(document.mainForm.numberInput.value);
+                let sum = 0;
+                for (num; num > 0; num = Math.floor(num / 10)) sum += num % 10; 
+                document.write("Sum of the digits: " + sum);
+            }
+        </script>
+    </head>
+    <body>
+        <form name="mainForm">
+            <label for="number">Number: </label>
+            <br>
+            <input type="number" name="numberInput">
+            <br>
+            <input type="button" value="Calculate" onclick="getSum();">
+        </form>
+    </body>
+</html>
