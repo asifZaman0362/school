@@ -4,13 +4,24 @@ def lagrange_interpolation_y(x, y, y_approx) -> float:
         raise Exception("There are unbalanced number of data points on both axes!")
         return False
     for i in range(len(x)):
-        xp = 1
-        yp = 1
+        prod = 1
         for j in range(len(x)):
-            xp *= y_approx - y[j] if i != j else 1
-            yp *= y[i] - y[j] if i != j else 1
-        x_approx += xp / yp * x[i]
+            prod *= (y_approx - y[j]) / (y[i] - y[j]) if i != j else 1
+        x_approx += prod * x[i]
     return x_approx
+
+def lagrange_interpolation_x(x, y, x_approx) -> float:
+    y_approx = 0
+    if len(x) != len(y):
+        raise Exception("There are unbalanced number of data points on both axes!")
+        return False
+    for i in range(len(x)):
+        prod = 1
+        for j in range(len(x)):
+            prod *= (x_approx - x[j]) / (x[i] - x[j]) if i != j else 1
+        y_approx += prod * y[i]
+    return y_approx
+
 
 if __name__ == "__main__":
     try:
