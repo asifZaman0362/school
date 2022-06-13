@@ -126,6 +126,7 @@ void create_token(char *lexeme, token_t *stream, ulong *lexeme_length, ulong *st
                     i++;
                 } else {
                     strncpy(stream[*stream_length].lexeme, lexeme + i, j);
+                    stream[*stream_length].lexeme[j] = '\0';
                     stream[*stream_length].type = OPERATOR;
                     *stream_length += 1;
                     i = j;
