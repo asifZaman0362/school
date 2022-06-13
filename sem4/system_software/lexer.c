@@ -4,15 +4,18 @@
 #include "utils.h"
 
 
-#define FLAG_UNDEFINED	0
-#define FLAG_OPERATOR	1
-#define FLAG_OTHER		2
+#define FLAG_UNDEFINED  0
+#define FLAG_OPERATOR   1
+#define FLAG_OTHER      2
+
+#define MAX_TOKEN_SIZE  30
+
 
 typedef unsigned int uint;
-
+typedef unsigned long ulong;
 
 typedef enum {
-    LITERAL, KEYWORD, IDENTIFIER, OPERATOR, ERROR
+    LITERAL, KEYWORD, IDENTIFIER, OPERATOR, ERROR, STRING, CHARACTER
 } token_type;
 
 typedef struct {
@@ -21,8 +24,8 @@ typedef struct {
 } token_t;
 
 
-unsigned long hash_table_keywords[32];
-unsigned long hash_table_operators[18];
+ulong hash_table_keywords[32];
+ulong hash_table_operators[19];
 
 
 void setup() {
@@ -32,24 +35,28 @@ void setup() {
             "const", "float", "short", "unsigned", "continue", "for", "signed", "void",
             "default", "goto", "sizeof", "volatile", "do", "if", "static", "while"
     };
-    const char compound_operators[18][3] = {
-            "++", "--", "+=", "-=", "*=", "/=", "%=", "&&", "||", 
-            "~=", "^=", "==", ">=", "<=", ">>", "<<", "|=", "&="
+    const char compound_operators[19][4] = {
+            "++", "--", "+=", "-=", "*=", "/=", "%=", "&&", "||",
+            "^=", "==", ">=", "<=", ">>", "<<", "|=", "&=", ">>=", "<<="
     };
     for (int i = 0; i < 32; i++) {
         hash_table_keywords[i] = compute_hash(keywords[i]);
-        if (i < 18) hash_table_operators[i] = compute_hash(compound_operators[i]);
+        if (i < 19) hash_table_operators[i] = compute_hash(compound_operators[i]);
     }
 }
 
 
 bool is_operator(const char symbol) {
-    return contains("(){}[]<>!=%*&:?/+-|", symbol);
+    return contains("(){}[]<>!=%*&:?/+-|,;", symbol);
 }
 
-bool is_compound_operator(const char *token) {
-    unsigned long hash = compute_hash(token);
-    for (int i = 0; i < 18; i++) {
+bool is_whitespace(const char symbol) {
+    return symbol == 32 || symbol == 10 || symbol == 9;
+}
+
+bool is_compound_operator(const char *token, const int n) {
+    unsigned long hash = compute_hash_n(token, n);
+    for (int i = 0; i < 19; i++) {
         if (hash_table_operators[i] == hash) return true;
     } return false;
 }
@@ -76,107 +83,202 @@ bool is_identifier(const char *token) {
     for (const char *iter = token; *iter != '\0'; iter++) {
         const char ch = *iter;
         if (!flag) {
-            if (!((ch >= 65 && ch <= 90) || (ch >= 97 && ch <= 182) || ch == '_'))
-                return false;
+            if (!is_alpha_(ch)) return false;
             else flag = true;
         } else {
-            if ((ch >= 65 && ch <= 90) || (ch >= 97 && ch <= 182)
-                || ch == '_' || (ch >= '0' && ch <= '9')) {
-                continue;
-            } else return false;
+            if (is_alnum_(ch)) continue;
+            else return false;
         }
     }
     return true;
 }
 
-void make_token(const char *string, token_t *token, const uint i) {
-    if (i == 1) {
-        if (is_operator(string[0])) {
-            token->lexeme[0] = string[0];
-            token->lexeme[1] = '\0';
-            token->type = OPERATOR;
+void create_token(char *lexeme, token_t *stream, ulong *lexeme_length, ulong *stream_length, bool operator) {
+    if (*lexeme_length == 0) return;
+    lexeme[*lexeme_length] = '\0';
+    if (operator) {
+        if (*lexeme_length == 1) {
+            stream[*stream_length].type = OPERATOR;
+            stream[*stream_length].lexeme[0] = lexeme[0];
+            stream[*stream_length].lexeme[1] = '\0';
+            *stream_length += 1;
+            *lexeme_length = 0;
             return;
+        } else {
+            // TODO: feels kinda fishy. check again [apparently not :)]
+            ulong i = 0;
+            while (i < *lexeme_length) {
+                if (i == *lexeme_length - 1) {
+                    stream[*stream_length].type = OPERATOR;
+                    stream[*stream_length].lexeme[0] = lexeme[i];
+                    stream[*stream_length].lexeme[1] = '\0';
+                    *stream_length += 1;
+                    *lexeme_length = 0;
+                    return;
+                }
+                ulong j = *lexeme_length;
+                while (!is_compound_operator(lexeme + i, j - i) && j > i) j--;
+                if (j == i) {
+                    stream[*stream_length].type = OPERATOR;
+                    stream[*stream_length].lexeme[0] = lexeme[i];
+                    stream[*stream_length].lexeme[1] = '\0';
+                    *stream_length += 1;
+                    i++;
+                } else {
+                    strncpy(stream[*stream_length].lexeme, lexeme + i, j);
+                    stream[*stream_length].type = OPERATOR;
+                    *stream_length += 1;
+                    i = j;
+                }
+            }
         }
     }
-    if (is_compound_operator(string)) {
-        strcpy(token->lexeme, string);
-        token->type = OPERATOR;
-    } else if (is_literal(string)) {
-        strcpy(token->lexeme, string);
-        token->type = LITERAL;
-    } else if (is_keyword(string)) {
-        strcpy(token->lexeme, string);
-        token->type = KEYWORD;
-    } else if (is_identifier(string)) {
-        strcpy(token->lexeme, string);
-        token->type = IDENTIFIER;
-    } else token->type = ERROR;
+    else if (is_literal(lexeme)) {
+        strcpy(stream[*stream_length].lexeme, lexeme);
+        stream[*stream_length].type = LITERAL;
+        *stream_length += 1;
+        *lexeme_length = 0;
+    } else if (is_keyword(lexeme)) {
+        strcpy(stream[*stream_length].lexeme, lexeme);
+        stream[*stream_length].type = KEYWORD;
+        *stream_length += 1;
+        *lexeme_length = 0;
+    } else if (is_identifier(lexeme)) {
+        strcpy(stream[*stream_length].lexeme, lexeme);
+        stream[*stream_length].type = IDENTIFIER;
+        *stream_length += 1;
+        *lexeme_length = 0;
+    } else {
+        strcpy(stream[*stream_length].lexeme, lexeme);
+        stream[*stream_length].type = ERROR;
+        *stream_length += 1;
+        *lexeme_length = 0;
+    }
+    *lexeme_length = 0;
 }
 
-uint tokenise(const char *code, token_t *tokenstream) {
-    uint i = 0, j = 0, flag = FLAG_UNDEFINED;
-    bool multiline_comment = false, singleline_comment = false;
-    char token_builder[20];
-    for (const char *iter = code; *iter != '\0'; iter++) {
-        const char ch = *iter;
-        if (singleline_comment) {
-        	if (ch == '\n') singleline_comment = false;
-        } else if (multiline_comment) {
-        	if (ch == '*' && *(iter + 1) == '/') {
-        		multiline_comment = false;
-        		iter++;
-        	}
-        }
-        else if (is_operator(ch)) {
-        	if (ch == '/' && *(iter + 1) == '/') {
-        		singleline_comment = true;
-        		if (i > 0) {
-                    token_builder[i] = '\0';
-                    make_token(token_builder, &tokenstream[j++], i);
-                    i = 0;
-                } continue;
-        	} else if (ch == '/' && *(iter + 1) == '*') {
-        		multiline_comment = true;
-        		if (i > 0) {
-                    token_builder[i] = '\0';
-                    make_token(token_builder, &tokenstream[j++], i);
-                    i = 0;
-                } continue;
-        	}
-            if (flag == FLAG_OPERATOR) token_builder[i++] = ch;
-            else {
-                if (i > 0) {
-                    token_builder[i] = '\0';
-                    make_token(token_builder, &tokenstream[j++], i);
-                    i = 0;
-                }
-                token_builder[i++] = ch;
+const char* find_next_linebreak(const char *string) {
+    for (; *string != '\n'; string++) {
+        if (*string == '\0') return string;
+    }
+    return string;
+}
+
+const char* find_multiline_comment_end(const char *string) {
+    for (; *string != '\0'; string++) {
+        if (*string == '*' && *(string + 1) == '/') return string + 1;
+    }
+    return string;
+}
+
+const char* scan_string_literal(const char *string, char *parsed_lexeme, ulong *lexeme_length) {
+    bool escape = false;
+    ulong i = 0;
+    for (; *string != '\0'; string++) {
+        const char ch = *string;
+        if (escape) {
+            switch (ch) {
+                case 'n':
+                    parsed_lexeme[i++] = '\n';
+                    break;
+                case 't':
+                    parsed_lexeme[i++] = '\t';
+                    break;
+                case 'a':
+                    parsed_lexeme[i++] = '\a';
+                    break;
+                default:
+                    parsed_lexeme[i++] = ch;
             }
+            escape = false;
+        } else if (ch == '\\') {
+            escape = true;
+        } else if (ch == '"') {
+            parsed_lexeme[i] = '\0';
+            *lexeme_length = i;
+            return string + 1;
+        } else parsed_lexeme[i++] = ch;
+    }
+    assert(*string != '\0', "Error: couldn't find ending quote for string literal at: %lu", i);
+    *lexeme_length = i;
+    return string;
+}
+
+const char* scan_character_literal(const char *string, char *parsed_lexeme, ulong *lexeme_length) {
+    bool escape = false;
+    ulong i = 0;
+    for (; *string != '\0'; string++) {
+        const char ch = *string;
+        if (escape) {
+            switch (ch) {
+                case 'n':
+                    parsed_lexeme[i++] = '\n';
+                    break;
+                case 't':
+                    parsed_lexeme[i++] = '\t';
+                    break;
+                case 'a':
+                    parsed_lexeme[i++] = '\a';
+                    break;
+                default:
+                    parsed_lexeme[i++] = ch;
+            }
+            escape = false;
+        } else if (ch == '\\') {
+            escape = true;
+        } else if (ch == '\'') {
+            parsed_lexeme[i] = '\0';
+            assert(i == 1, "Error: not a valid character");
+            return string + 1;
+        } else parsed_lexeme[i++] = ch;
+    }
+    assert(*string != '\0', "Error: couldn't find ending quote for string literal");
+    *lexeme_length = i;
+    return string;
+}
+
+
+ulong lex(const char *code, token_t *token_stream) {
+    char lexeme[MAX_TOKEN_SIZE];
+    ulong lexeme_length = 0, stream_length = 0;
+    ushort flag = FLAG_UNDEFINED;
+    for (const char *iter = code; *iter != '\0'; iter++) {
+        char ch = *iter, lookahead = *(iter + 1);
+        if (ch == '/' && lookahead == '*') {
+            create_token(lexeme, token_stream, &lexeme_length, &stream_length, flag == FLAG_OPERATOR);
+            iter = find_multiline_comment_end(iter);
+        } else if (ch == '/' && lookahead == '/') {
+            create_token(lexeme, token_stream, &lexeme_length, &stream_length, flag == FLAG_OPERATOR);
+            iter = find_next_linebreak(iter);
+        } else if (ch == '"') {
+            create_token(lexeme, token_stream, &lexeme_length, &stream_length, flag == FLAG_OPERATOR);
+            iter = scan_string_literal(iter + 1, lexeme, &lexeme_length);
+            create_token(lexeme, token_stream, &lexeme_length, &stream_length, false);
+            token_stream[stream_length - 1].type = STRING;
+        } else if (ch == '\'') {
+            create_token(lexeme, token_stream, &lexeme_length, &stream_length, flag == FLAG_OPERATOR);
+            iter = scan_character_literal(iter + 1, lexeme, &lexeme_length);
+            create_token(lexeme, token_stream, &lexeme_length, &stream_length, false);
+            token_stream[stream_length - 1].type = CHARACTER;
+        } else if (is_operator(ch)) {
+            if (flag == FLAG_OTHER)
+                create_token(lexeme, token_stream, &lexeme_length, &stream_length, false);
+            lexeme[lexeme_length++] = ch;
             flag = FLAG_OPERATOR;
-        } else if (contains(" \t\n;", ch)) {
+        } else if (is_whitespace(ch)) {
+            create_token(lexeme, token_stream, &lexeme_length, &stream_length, flag == FLAG_OPERATOR);
             flag = FLAG_UNDEFINED;
-            if (i > 0) {
-                token_builder[i] = '\0';
-                make_token(token_builder, &tokenstream[j++], i);
-                i = 0;
-            } else continue;
         } else {
-            if (flag == FLAG_OPERATOR) {
-                if (i > 0) {
-                    token_builder[i] = '\0';
-                    make_token(token_builder, &tokenstream[j++], i);
-                    i = 0;
-                }
-                token_builder[i++] = ch;
-            } else token_builder[i++] = ch;
+            if (flag == FLAG_OPERATOR)
+                create_token(lexeme, token_stream, &lexeme_length, &stream_length, true);
+            lexeme[lexeme_length++] = ch;
             flag = FLAG_OTHER;
         }
+        if (lookahead == '\0' || ch == '\0') {
+            create_token(lexeme, token_stream, &lexeme_length, &stream_length, flag == FLAG_OPERATOR);
+        }
     }
-    if (i > 0) {
-        token_builder[i] = '\0';
-        make_token(token_builder, &tokenstream[j++], i);
-    }
-    return j;
+    return stream_length;
 }
 
 
@@ -186,7 +288,7 @@ int main(void) {
     char input_buffer[100];
     printf("Enter C code:\n");
     fgets(input_buffer, 100, stdin);
-    uint j = tokenise(input_buffer, tokenstream);
+    ulong j = lex(input_buffer, tokenstream);
     printf("Tokens formed:\n");
     for (int i = 0; i < j; i++) {
         printf("Token:\n");
@@ -203,6 +305,12 @@ int main(void) {
                 break;
             case OPERATOR:
                 printf("\ttype: OPERATOR\n");
+                break;
+            case CHARACTER:
+                printf("\ttype: CHARACTER LITERAL\n");
+                break;
+            case STRING:
+                printf("\ttype: STRING LITERAL\n");
                 break;
             case ERROR:
                 printf("\ttype: ERROR\n");
