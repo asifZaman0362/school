@@ -25,7 +25,9 @@ typedef struct {
 
 
 ulong hash_table_keywords[32];
+ulong hash_table_2_keywords[32];
 ulong hash_table_operators[19];
+ulong hash_table_2_operators[19];
 
 
 void setup() {
@@ -41,7 +43,11 @@ void setup() {
     };
     for (int i = 0; i < 32; i++) {
         hash_table_keywords[i] = compute_hash(keywords[i]);
-        if (i < 19) hash_table_operators[i] = compute_hash(compound_operators[i]);
+        hash_table_2_keywords[i] = compute_hash2(keywords[i]);
+        if (i < 19) {
+            hash_table_operators[i] = compute_hash(compound_operators[i]);
+            hash_table_2_operators[i] = compute_hash2(compound_operators[i]);
+        }
     }
 }
 
@@ -56,15 +62,17 @@ bool is_whitespace(const char symbol) {
 
 bool is_compound_operator(const char *token, const int n) {
     unsigned long hash = compute_hash_n(token, n);
+    unsigned long hash2 = compute_hash2_n(token, n);
     for (int i = 0; i < 19; i++) {
-        if (hash_table_operators[i] == hash) return true;
+        if (hash_table_operators[i] == hash && hash_table_2_operators[i] == hash2) return true;
     } return false;
 }
 
 bool is_keyword(const char *token) {
     unsigned long hash = compute_hash(token);
+    unsigned long hash2 = compute_hash2(token);
     for (int i = 0; i < 32; i++) {
-        if (hash_table_keywords[i] == hash) return true;
+        if (hash_table_keywords[i] == hash && hash_table_2_keywords[i] == hash2) return true;
     } return false;
 }
 

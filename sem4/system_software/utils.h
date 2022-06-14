@@ -39,6 +39,22 @@ unsigned long compute_hash_n(const char *string, const int n) {
     } return hash % 2147483647;
 }
 
+unsigned long compute_hash2(const char *string) {
+    unsigned long hash = 0;
+    for (const char *c = string; *c != '\0'; c++) {
+        hash = hash * 17 + (int) *c;
+        hash += (int) *c * 15 | (int) *c;
+    } return hash % 2147483647;
+}
+
+unsigned long compute_hash2_n(const char *string, const int n) {
+    unsigned long hash = 0;
+    for (int i = 0; i < n && string[i] != '\0'; i++) {
+        hash = hash * 17 + (int) *c;
+        hash += (int) *c * 15 | (int) *c;
+    } return hash % 2147483647;
+}
+
 bool is_alpha_(const char ch) {
     return (ch >= 65 && ch <= 90) || (ch >= 97 && ch <= 122) || ch == 95;
 }
