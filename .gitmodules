@@ -1,3 +1,9 @@
-[submodule "sem3/cg"]
-	path = sem3/cg
-	url = git@github.com:asifZaman0362/terminal-graphics.git
+[submodule "compiler_design/clexer"]
+	path = compiler_design/clexer
+	url = git@github.com:asifZaman0362/clexer
+[submodule "compiler_design/simple_parser"]
+	path = compiler_design/simple_parser
+	url = git@github.com:asifZaman0362/parsers.git
+[submodule "mathematics/discrete_structures"]
+	path = mathematics/discrete_structures
+	url = git@github.com:asifZaman0362/discrete_structures

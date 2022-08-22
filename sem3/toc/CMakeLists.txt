@@ -1,5 +1,0 @@
-cmake_minimum_required(VERSION 3.15)
-project(automata)
-set(SOURCE_FILES d_f_automaton.c utils.c main.c)
-set(HEADER_FILES d_f_automaton.h d_f_automaton.h utils.h state.h)
-add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES})
