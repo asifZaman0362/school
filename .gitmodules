@@ -4,3 +4,6 @@
 [submodule "compiler_design/simple_parser"]
 	path = compiler_design/simple_parser
 	url = git@github.com:asifZaman0362/parsers.git
+[submodule "mathematics/discrete_structures"]
+	path = mathematics/discrete_structures
+	url = git@github.com:asifZaman0362/discrete_structures
