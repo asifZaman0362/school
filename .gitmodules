@@ -10,3 +10,6 @@
 [submodule "assembly/8085simulator-rs"]
 	path = assembly/8085simulator-rs
 	url = git@gitlab.com:zero362001/8085simulator-rs
+[submodule "graphics/terminal-graphics"]
+	path = graphics/terminal-graphics
+	url = git@github.com:asifZaman0362/terminal-graphics
