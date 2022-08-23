@@ -7,3 +7,6 @@
 [submodule "mathematics/discrete_structures"]
 	path = mathematics/discrete_structures
 	url = git@github.com:asifZaman0362/discrete_structures
+[submodule "assembly/8085simulator-rs"]
+	path = assembly/8085simulator-rs
+	url = git@gitlab.com:zero362001/8085simulator-rs
