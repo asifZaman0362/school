@@ -13,3 +13,6 @@
 [submodule "graphics/terminal-graphics"]
 	path = graphics/terminal-graphics
 	url = git@github.com:asifZaman0362/terminal-graphics
+[submodule "MinorProject"]
+	path = MinorProject
+	url = git@github.com:asifZaman0362/MinorProject
