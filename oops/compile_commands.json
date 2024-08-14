@@ -1,0 +1,19 @@
+[
+ {
+  "directory": "/Users/asifzaman/src/school/oops",
+  "arguments": [
+   "g++",
+   "-O2",
+   "-Wall",
+   "-Iinc",
+   "-std=c++17",
+   "-isysroot",
+   "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+   "-c",
+   "src/ds/list.cc",
+   "-o",
+   "build/ds.o"
+  ],
+  "file": "src/ds/list.cc"
+ }
+]
