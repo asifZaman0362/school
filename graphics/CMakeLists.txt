@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
 if (NOT APPLE)
-    include_directories(external/glad/src/glad.c)
+    include_directories(external/glad/include)
     set(GLAD_SRC external/glad/src/glad.c)
 else()
     find_package(glfw3 3.4 REQUIRED)

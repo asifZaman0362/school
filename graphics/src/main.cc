@@ -1,3 +1,4 @@
+#include <cstdlib>
 #define GLFW_INCLUDE_NONE
 #ifdef __APPLE__
 #define GLFW_INCLUDE_GLCOREARB
@@ -8,6 +9,8 @@
 #ifndef __APPLE__
 #include <glad/glad.h>
 #endif
+
+#include <cstdio>
 
 int main(int argc, char** argv) {
     GLFWwindow* window;
@@ -23,7 +26,13 @@ int main(int argc, char** argv) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#else
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
+
 
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(1280, 720, "Hello World", NULL, NULL);
@@ -34,6 +43,13 @@ int main(int argc, char** argv) {
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
+
+#ifndef __APPLE__
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        fprintf(stderr, "Failed to load GLAD!\n");
+        exit(-1);
+    }
+#endif
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
