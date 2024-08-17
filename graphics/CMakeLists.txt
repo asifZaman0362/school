@@ -5,7 +5,11 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
-find_package(GLUT REQUIRED)
+set(NIX COMMAND "nix --version")
+
+if (NOT NIX)
+    find_package(GLUT REQUIRED)
+endif()
 if (APPLE)
     find_package(OpenGL REQUIRED)
 endif()
@@ -14,7 +18,7 @@ include_directories(${GLUT_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR})
 add_executable(${CMAKE_PROJECT_NAME} ${GLAD_SRC} src/main.cc)
 
 if (LINUX)
-    target_link_libraries(${CMAKE_PROJECT_NAME} GL glut)
+    target_link_libraries(${CMAKE_PROJECT_NAME} GL glut GLU)
 elseif (WIN32)
     target_link_libraries(${CMAKE_PROJECT_NAME} glut kernel32 opengl32)
 elseif (APPLE)
